@@ -1,24 +1,34 @@
-import logo from './logo.svg';
+// src/App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes,} from 'react-router-dom';
+import SurveyForm from './components/SurveyForm';
+import SideNavigation from './components/SideNavigation';
+import MapComponent from './components/MapComponent';
+import HomePage from './components/HomePage';
 import './App.css';
 
 function App() {
+  const [selectedOffice, setSelectedOffice] = useState(null);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route 
+            path="/kiosk" 
+            element={
+              <div className="kiosk-container">
+                <SideNavigation setSelectedOffice={setSelectedOffice} />
+                <MapComponent selectedOffice={selectedOffice} />
+              </div>
+            } 
+          />
+          <Route path="/survey-form" element={<SurveyForm />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

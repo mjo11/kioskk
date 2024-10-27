@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { Button, Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import "./SurveyForm.css";
 
 const questionss = [
@@ -33,6 +35,7 @@ const fetchQuestion = async () => {
 const SurveyForm = () => {
   const [question, setQuestion] = useState([]); //sinet sa empty array
   const [response, setResponse] = useState([]);
+  const [rate, setRate] = useState();
   const questionRefs = useRef({});
 
   useEffect(() => {
@@ -48,14 +51,32 @@ const SurveyForm = () => {
       ...prevResponse,
       [questionId]: answer,
     }));
-    console.log(response);
+    // console.log(response);
+  };
+  const handleChangeValue = (e, newRate) => {
+    setRate(newRate);
+    console.log(rate);
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    console.log(response);
+  };
   return (
     <>
       <div>
-        <form onClick={handleSubmit()}>
+        <Stack>
+          <ToggleButtonGroup
+            size="large"
+            value={rate}
+            onChange={handleChangeValue}
+            exclusive
+          >
+            <ToggleButton value={"happy"}></ToggleButton>
+            <ToggleButton value={"sad"}></ToggleButton>
+            <ToggleButton value={"satisfied"}></ToggleButton>
+          </ToggleButtonGroup>
+        </Stack>
+        <Stack spacing={2} direction={"column"}>
           {question && question.length > 0 ? (
             question.map((question) => (
               <div key={question.id}>
@@ -91,8 +112,19 @@ const SurveyForm = () => {
           ) : (
             <p>loading</p>
           )}
-          <button type="submit">Submit </button>
-        </form>
+          <Stack direction={"row"}>
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
+              color="success"
+              size="medium"
+              disableElevation
+              endIcon={<CheckCircleIcon />}
+            >
+              Submit
+            </Button>
+          </Stack>
+        </Stack>
       </div>
     </>
   );
